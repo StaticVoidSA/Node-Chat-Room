@@ -1,3 +1,4 @@
+// Navigate to localhost:9000/Name to join chat room once service is running
 const express = require("express");
 const socketIO = require("socket.io");
 
