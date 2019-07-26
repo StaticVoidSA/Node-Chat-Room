@@ -68,9 +68,6 @@
         socket.on("connect", function() {
             var nRoom = "nRoom";
             socket.emit('nRoom', nRoom);
-
-            var pRoom = "pRoom";
-            socket.emit('pRoom', pRoom);
         });
 
         var nBtn = document.getElementById("nBtn");
