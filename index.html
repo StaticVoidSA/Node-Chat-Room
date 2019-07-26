@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat</title>
+</head>
+<style>
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: whitesmoke;
+        align-content: center;
+        width: 800;
+        margin-left: auto;
+        margin-right: auto; 
+        margin: 5px;
+    }
+    .outer { 
+        width: 900px;
+    }
+    .room {
+        width: 400px;
+        float: left;
+    }
+    .txt-send {
+        width: 400px;
+        margin: 5px;
+    }
+    .messages {
+        width: 500px;
+        height: 500px;
+        background-color: rgba(243, 244, 245, 0.678);
+        border: 1px solid black;
+        margin: 5px;
+        color: black;
+        font-size: 20px;
+        padding: 2px;
+    }
+    h1 {
+        margin: 5px;
+        text-align: justify;
+        align-content: center;
+    }
+</style>
+<body>
+    <div class="outer">
+        <div class="room">
+            <h1>Chat Room</h1>
+            <div class="messages" id="nMessages"></div>
+                <form>
+                    <input type="text" name="" id="nTxt" class="txt-send">
+                    <input type="button" value="Send" id="nBtn" class="btn">
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--Add Node module route-->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        function clearText() {
+            document.getElementById("nTxt").value = "";
+            document.getElementById("pTxt").value = "";
+        }
+
+        var socket = io();
+
+        socket.on("connect", function() {
+            var nRoom = "nRoom";
+            socket.emit('nRoom', nRoom);
+
+            var pRoom = "pRoom";
+            socket.emit('pRoom', pRoom);
+        });
+
+        var nBtn = document.getElementById("nBtn");
+        var nTxt = document.getElementById("nTxt");
+        var nMessages = document.getElementById("nMessages");
+
+        nBtn.addEventListener("click", function() {
+            socket.emit("node new message", nTxt.value);
+            clearText();
+        });
+
+        socket.on("node news", function(data) {
+            nMessages.innerHTML = nMessages.innerHTML + "<br />" + data;
+        });
+
+        socket.on("node new user", function(data) {
+            nMessages.innerHTML = nMessages.innerHTML + "<br />" + data;
+        });
+    </script>
+</body>    
+</html>
